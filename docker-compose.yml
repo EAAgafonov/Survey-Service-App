@@ -1,0 +1,21 @@
+version: '3'
+services:
+  db:
+    image: "postgres:14.1-alpine"
+    container_name: db
+    environment:
+      - POSTGRES_DB=SurveysTable
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=user
+  serviceapp:
+    build: .
+    container_name: serviceapp
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/SurveysTable
+      - SPRING_DATASOURCE_USERNAME=user
+      - SPRING_DATASOURCE_PASSWORD=user
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=none
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
